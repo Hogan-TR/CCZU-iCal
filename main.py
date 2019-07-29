@@ -9,7 +9,7 @@ from random import Random
 from lxml import etree
 
 
-def LoginCookie(user,  passwd):
+def LoginCookie(user, passwd):
     session = requests.session()
     url = "http://jwcas.cczu.edu.cn/login"
 
@@ -20,7 +20,7 @@ def LoginCookie(user,  passwd):
         html.encoding = html.apparent_encoding
         html = html.text
     except:
-        print("Failed to get info of LoginPage.\n")
+        print("Failed to pick up details of LoginPage.")
         return False
 
     # Initialize the string, which makes it available to the function of xpath
@@ -54,6 +54,7 @@ def LoginCookie(user,  passwd):
     tmp2 = session.get(Rurl, headers=headers)
 
     # Extract the cookies dictionary and return it.
+    print("Getting Cookies Successfully.")
     return tmp2.cookies.get_dict()
 
 
@@ -86,7 +87,7 @@ def ClassProcess(gClass):
         index += 1
 
     classInfoTemp = list()
-    global classInfoList 
+    global classInfoList
     for i in range(7):  # Traverse each day in turn
         num = 0
         classToday = list()  # A list contains today's class schedules
@@ -142,29 +143,31 @@ def ClassProcess(gClass):
                 tpweek.extend(gweek)
                 classInfoList.append(tpweek)
 
+    print("Processing Class Schedule Successfully.")
+
 
 def setFirstWeekDate(firstWeekDate):
     global DONE_firstWeekDate
     DONE_firstWeekDate = time.strptime(firstWeekDate, '%Y%m%d')
-    print("setFirstWeekDate:", DONE_firstWeekDate)
+    print("SetFirstWeekDate:", DONE_firstWeekDate)
 
 
 def setReminder(reminder):
     global DONE_reminder
     reminderList = ["-PT10M", "-PT30M", "-PT1H", "-PT2H", "-P1D"]
-    if(reminder == "1"):
+    if (reminder == "1"):
         DONE_reminder = reminderList[0]
-    elif(reminder == "2"):
+    elif (reminder == "2"):
         DONE_reminder = reminderList[1]
-    elif(reminder == "3"):
+    elif (reminder == "3"):
         DONE_reminder = reminderList[2]
-    elif(reminder == "4"):
+    elif (reminder == "4"):
         DONE_reminder = reminderList[3]
-    elif(reminder == "5"):
+    elif (reminder == "5"):
         DONE_reminder = reminderList[4]
     else:
         DONE_reminder = "NULL"
-    print("setReminder", reminder)
+    print("SetReminder:", reminder)
 
 
 def setClassTime():
@@ -173,7 +176,7 @@ def setClassTime():
         data = json.load(f)
     global classTimeList
     classTimeList = data["classTime"]
-    print("setclassTime")
+    print("Setting ClassTime Successfully.")
 
 
 def classInfoHandle():
@@ -206,9 +209,9 @@ def classInfoHandle():
         w = startWeek + 1
         while (i):
             date = date + datetime.timedelta(days=7.0)
-            if(date > endDate):
+            if (date > endDate):
                 i = YES
-            if(week == 3):
+            if (week == 3):
                 string = date.strftime('%Y%m%d')
                 dateList.append(string)
             if ((week == 1) and (w % 2 == 1)):
@@ -228,6 +231,7 @@ def classInfoHandle():
         for date in dateList:
             UID_List.append(UID_Create())
         classInfo.append(UID_List)
+    print("ClassInfo Handled Successfully.")
 
 
 def random_str(randomlength):
@@ -268,35 +272,37 @@ def save(string):
 
 def icsCreateAndSave():
     icsString = "BEGIN:VCALENDAR\nMETHOD:PUBLISH\nVERSION:2.0\nX-WR-CALNAME:课程表\nPRODID:-//Apple Inc.//Mac OS X 10.12//EN\nX-APPLE-CALENDAR-COLOR:#FC4208\nX-WR-TIMEZONE:Asia/Shanghai\nCALSCALE:GREGORIAN\nBEGIN:VTIMEZONE\nTZID:Asia/Shanghai\nBEGIN:STANDARD\nTZOFFSETFROM:+0900\nRRULE:FREQ=YEARLY;UNTIL=19910914T150000Z;BYMONTH=9;BYDAY=3SU\nDTSTART:19890917T000000\nTZNAME:GMT+8\nTZOFFSETTO:+0800\nEND:STANDARD\nBEGIN:DAYLIGHT\nTZOFFSETFROM:+0800\nDTSTART:19910414T000000\nTZNAME:GMT+8\nTZOFFSETTO:+0900\nRDATE:19910414T000000\nEND:DAYLIGHT\nEND:VTIMEZONE\n"
-    global classTimeList, DONE_ALARMUID, DONE_UnitUID,classInfoList
+    global classTimeList, DONE_ALARMUID, DONE_UnitUID, classInfoList
     eventString = ""
     for classInfo in classInfoList:
         # i = int(classInfo["classTime"]-1)
-        classBegin = classInfo[4]-1
+        classBegin = classInfo[4] - 1
         classTimes = classInfo[5]
-        className = classInfo[0]+" | "+classInfo[1]
-        endTime = classTimeList[classBegin+classTimes-1]["endTime"]
+        className = classInfo[0] + " | " + classInfo[1]
+        endTime = classTimeList[classBegin + classTimes - 1]["endTime"]
         startTime = classTimeList[classBegin]["startTime"]
         index = 0
         for date in classInfo[8]:
             eventString = eventString + \
-                "BEGIN:VEVENT\nCREATED:"+classInfo[9]
-            eventString = eventString+"\nUID:"+classInfo[11][index]
-            eventString = eventString+"\nDTEND;TZID=Asia/Shanghai:"+date+"T"+endTime
+                "BEGIN:VEVENT\nCREATED:" + classInfo[9]
+            eventString = eventString + "\nUID:" + classInfo[11][index]
+            eventString = eventString + "\nDTEND;TZID=Asia/Shanghai:" + date + "T" + endTime
             eventString = eventString + \
-                "00\nTRANSP:OPAQUE\nX-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\nSUMMARY:"+className
-            eventString = eventString+"\nDTSTART;TZID=Asia/Shanghai:"+date+"T"+startTime+"00"
-            eventString = eventString+"\nDTSTAMP:" + \
+                "00\nTRANSP:OPAQUE\nX-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\nSUMMARY:" + className
+            eventString = eventString + "\nDTSTART;TZID=Asia/Shanghai:" + \
+                date + "T" + startTime + "00"
+            eventString = eventString + "\nDTSTAMP:" + \
                 DONE_CreatedTime  # classInfo["CREATED"]
-            eventString = eventString+"\nSEQUENCE:0\nBEGIN:VALARM\nX-WR-ALARMUID:"+DONE_ALARMUID
-            eventString = eventString+"\nUID:"+DONE_UnitUID
-            eventString = eventString+"\nTRIGGER:"+DONE_reminder
-            eventString = eventString+"\nDESCRIPTION:事件提醒\nACTION:DISPLAY\nEND:VALARM\nEND:VEVENT\n"
+            eventString = eventString + "\nSEQUENCE:0\nBEGIN:VALARM\nX-WR-ALARMUID:" + DONE_ALARMUID
+            eventString = eventString + "\nUID:" + DONE_UnitUID
+            eventString = eventString + "\nTRIGGER:" + DONE_reminder
+            eventString = eventString + \
+                "\nDESCRIPTION:事件提醒\nACTION:DISPLAY\nEND:VALARM\nEND:VEVENT\n"
 
             index += 1
     icsString = icsString + eventString + "END:VCALENDAR"
     save(icsString)
-    print("icsCreateAndSave")
+    print("File Saved Successfully.")
 
 
 if __name__ == "__main__":
@@ -311,28 +317,44 @@ if __name__ == "__main__":
     classInfoList = list()
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'}
-    # UserInfo = input('Please input your Username and Password to Login(Separated by a space in one line): ').split()
-    # try:
-    #     gCookie = LoginCookie(UserInfo[0],UserInfo[1])
-    # except:
-    #     print('Meet the error when try to Login, please try again.')
-    #     sys.exit(0)
+    UserInfo = input(
+        'Please input your Username and Password to Login(Separated by Space in one line): ').split()
+    try:
+        print("Getting Cookies...")
+        gCookie = LoginCookie(UserInfo[0], UserInfo[1])
+    except:
+        print('Meet the error when try to Login, please try again.')
+        sys.exit(0)
 
-    gCookie = {'ASP.NET_SessionId': 'q3q30wf340urfrfdotudjd45'}
+    # gCookie = {'ASP.NET_SessionId': 'q3q30wf340urfrfdotudjd45'}
 
+    print("Getting Class Schedule...")
     gClass = GetClass(gCookie)
     if not gClass:
         print('Meet the error when try to get RawClass, please try again.')
         sys.exit(0)
+    else:
+        print("Getting Class Schedule Successfully")
+
+    print("Processing Class Schedule...")
     ClassProcess(gClass)
     firstWeekDate = input(
-        'Please set the Monday date of the first week (eg 20160905):\n')
+        'Please set the Monday date of the first week (eg 20160905):')  # Date of the first week of Monday
+    
+    print("Setting The First WeekDate...")
     setFirstWeekDate(firstWeekDate)
     reminder = input(
         'The reminder function is being configured, please enter the number to select the reminder time\n[0]Do not reminder\n[1]Reminder 10 minutes before class\n[2]Reminder 30 minutes before class reminder\n[3]Reminder 1 hour before class reminder\n[4]Reminder 2 hours before class reminder\n[5]Reminder 1 day before class reminder \n')
+   
+    print("Setting Reminder...")
     setReminder(reminder)
+
+    print("Setting ClassTime...")
     setClassTime()
 
+    print("Handling ClassInfo...")
     classInfoHandle()
     uniteSetting()
+
+    print("Creating and Saving ICS file...")
     icsCreateAndSave()
