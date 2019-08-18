@@ -20,7 +20,7 @@ def LoginCookie(user: str, passwd: str) -> dict:
         html.encoding = html.apparent_encoding
         html = html.text
     except:
-        print("Failed to pick up details of LoginPage.")
+        print("从登录页获取随机信息失败")
         sys.exit(0)
 
     # Initialize the string, which makes it available to the function of xpath
@@ -47,7 +47,7 @@ def LoginCookie(user: str, passwd: str) -> dict:
     # Official Login
     sc = session.post(url, headers=headers, data=data)
     if not sc.cookies.get_dict():
-        print("Failed to Login, please check the username and password.")
+        print("用户名或密码错误，请检查重试")
         sys.exit(0)
     
     # Intercept jump link
@@ -57,18 +57,18 @@ def LoginCookie(user: str, passwd: str) -> dict:
         tmp_html = etree.HTML(tmp.text)
         Rurl = tmp_html.xpath('//a[@href and text()]/@href')[0]
     except:
-        print("Failed to pick up JumpPage's URL.")
+        print("获取跳转链接失败")
         sys.exit(0)
 
     # Get Cookies we need from DirectPage
     try:
         tmp2 = session.get(Rurl, headers=headers)
     except:
-        print("Failed to pick up Cookies of DirectPage.")
+        print("获取实用Cookies失败")
         sys.exit(0)
 
     # Extract the cookies dictionary and return it.
-    print("Getting Cookies Successfully.")
+    print("获取Cookies成功")
     return tmp2.cookies.get_dict()
 
 
@@ -157,7 +157,7 @@ def ClassProcess(gClass: list):
                 tpweek.extend(gweek)
                 classInfoList.append(tpweek)
 
-    print("Processing Class Schedule Successfully.")
+    print("课表格式化成功")
 
 
 def setFirstWeekDate(firstWeekDate):
@@ -190,7 +190,7 @@ def setClassTime():
         data = json.load(f)
     global classTimeList
     classTimeList = data["classTime"]
-    print("Setting ClassTime Successfully.")
+    print("上课时间设置成功")
 
 
 def classInfoHandle():
@@ -245,7 +245,7 @@ def classInfoHandle():
         for date in dateList:
             UID_List.append(UID_Create())
         classInfo.append(UID_List)
-    print("ClassInfo Handled Successfully.")
+    print("ics文本生成成功")
 
 
 def random_str(randomlength):
@@ -275,7 +275,7 @@ def uniteSetting():
 
     global DONE_UnitUID
     DONE_UnitUID = random_str(20) + "&Jacob.com"
-    print("Setting Unite Successfully.")
+    # print("Setting Unite Successfully.")
 
 
 def save(string):
@@ -316,11 +316,11 @@ def icsCreateAndSave():
             index += 1
     icsString = icsString + eventString + "END:VCALENDAR"
     save(icsString)
-    print("File Saved Successfully.")
+    print("文件保存成功")
 
 
 if __name__ == "__main__":
-    # Initialize variables
+    # # Initialize variables
     YES = 0
     NO = 1
     DONE_firstWeekDate = time.time()
@@ -333,46 +333,45 @@ if __name__ == "__main__":
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'}
 
-    UserInfo = input(
-        'Please input your Username and Password to Login(Separated by Space in one line): ').split()
+    UserInfo = input('请输入学号和密码，以空格隔开：').split()
     try:
-        print("Getting Cookies...")
+        print("开始获取Cookies...")
         gCookie = LoginCookie(UserInfo[0], UserInfo[1])  # Type: Dict
     except:
-        print('Meet the error when try to Login, please try again.')
+        print('遇到错误啦w(ﾟДﾟ)w，请重试')
         sys.exit(0)
 
     # gCookie = {'ASP.NET_SessionId': ''}
 
-    print("Getting Class Schedule...")
+    print("开始获取课表...")
     gClass = GetClass(gCookie)
     if not gClass:
-        print('Meet the error when try to get RawClass, please try again.')
+        print('遇到错误啦(´･ω･`)?,请重试')
         sys.exit(0)
     else:
-        print("Getting Class Schedule Successfully")
+        print("获取课表成功")
 
-    print("Processing Class Schedule...")
+    print("开始课表格式化...")
     ClassProcess(gClass)
 
     firstWeekDate = input(
-        'Please set the Monday date of the first week (eg 20160905):')  # Date of the first week of Monday
-    print("Setting The First WeekDate...")
+        '请输入此学期第一周的星期一日期(eg 20160905):')  
+    print("正在设置第一周周一日期...")
     setFirstWeekDate(firstWeekDate)
 
     reminder = input(
-        'The reminder function is being configured, please enter the number to select the reminder time\n[0]Do not reminder\n[1]Reminder 10 minutes before class\n[2]Reminder 30 minutes before class reminder\n[3]Reminder 1 hour before class reminder\n[4]Reminder 2 hours before class reminder\n[5]Reminder 1 day before class reminder \n')
-    print("Setting Reminder...")
+        '正在设置提醒功能,请选择以下提醒时间对应编号:\n[0]不提醒\n[1]课前10分钟提醒\n[2]课前30分钟提醒\n[3]课前1小时提醒\n[4]课前2小时提醒\n[5]课前1天提醒\n')
+    print("正在设置课前提醒...")
     setReminder(reminder)
 
-    print("Setting ClassTime...")
+    print("正在设置上课时间...")
     setClassTime()
 
-    print("Handling ClassInfo...")
+    print("正在生成ics文本...")
     classInfoHandle()
 
-    print("Setting Unite...")
+    # print("Setting Unite...")
     uniteSetting()
 
-    print("Creating and Saving ICS file...")
+    print("正在保存ics文件...")
     icsCreateAndSave()
