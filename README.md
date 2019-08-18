@@ -44,7 +44,7 @@ python script.py
 
 ## ics文件使用
 
-这边有超详细的使用指南（本人太**，直接上链接）:grin:
+这边有超详细的使用指南（本人太**，直接上链接）
 
  :star2:  ​[华南师范大学 iCal课表使用指引](https://i.scnu.edu.cn/ical/doc#%E5%AF%BC%E5%85%A5%E7%9A%84%E6%AD%A5%E9%AA%A4)
 
