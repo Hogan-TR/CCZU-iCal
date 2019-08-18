@@ -190,7 +190,7 @@ def setClassTime():
         data = json.load(f)
     global classTimeList
     classTimeList = data["classTime"]
-    print("上课时间设置成功")
+    print("上课时间配置成功")
 
 
 def classInfoHandle():
@@ -356,15 +356,15 @@ if __name__ == "__main__":
 
     firstWeekDate = input(
         '请输入此学期第一周的星期一日期(eg 20160905):')  
-    print("正在设置第一周周一日期...")
+    print("正在配置第一周周一日期...")
     setFirstWeekDate(firstWeekDate)
 
     reminder = input(
-        '正在设置提醒功能,请选择以下提醒时间对应编号:\n[0]不提醒\n[1]课前10分钟提醒\n[2]课前30分钟提醒\n[3]课前1小时提醒\n[4]课前2小时提醒\n[5]课前1天提醒\n')
-    print("正在设置课前提醒...")
+        '正在配置提醒功能,请选择以下提醒时间对应编号:\n[0]不提醒\n[1]课前10分钟提醒\n[2]课前30分钟提醒\n[3]课前1小时提醒\n[4]课前2小时提醒\n[5]课前1天提醒\n')
+    print("正在配置课前提醒...")
     setReminder(reminder)
 
-    print("正在设置上课时间...")
+    print("正在配置上课时间...")
     setClassTime()
 
     print("正在生成ics文本...")
