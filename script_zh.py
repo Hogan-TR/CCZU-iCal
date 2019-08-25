@@ -1,7 +1,6 @@
 import requests
 import json
 import sys
-import pprint
 import copy
 import datetime
 import time
