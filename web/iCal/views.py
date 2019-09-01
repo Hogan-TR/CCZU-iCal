@@ -1,3 +1,4 @@
+from django.shortcuts import render
 import requests
 import copy
 import time
@@ -6,6 +7,10 @@ import datetime
 import os
 from random import Random
 from lxml import etree
+
+
+def index(request):
+    return render(request, 'iCal/index.html')
 
 
 class iCal(object):
@@ -82,7 +87,7 @@ class iCal(object):
             rep = requests.get(url, headers=self.headers, cookies=cookies)
             rep = rep.text
         except requests.exceptions.HTTPError:  # If get the status code - 500
-            return None
+            return "获取课表错误，请稍后重试"
 
         html = etree.HTML(rep)
         gClass = html.xpath(
@@ -264,7 +269,7 @@ class iCal(object):
         return self.random_str(20) + "&Jacob.com"
 
     def save(self, string, username):
-        f = open(f"./temp_ics/class_{username}.ics", 'wb')
+        f = open(f"../tempics/class_{username}.ics", 'wb')
         f.write(string.encode("utf-8"))
         f.close()
 
@@ -310,15 +315,30 @@ class iCalPro(iCal):
     def __init__(self):
         super(iCalPro, self).__init__()
 
-    def iCalPro(self, username, password, date, reminder):
+    def iCalPro(self, username, password, date, reminder) -> tuple:
         Cookies = self.LoginCookie(username, password)
+        if isinstance(Cookies, str):
+            return False, Cookies  # Error Reason
         ClassList = self.GetClass(Cookies)
-        self.ClassProcess(ClassList)
+        if isinstance(ClassList, str):
+            return False, ClassList  # Error Reason
 
-        self.setFirstWeekDate(date)
-        self.setReminder(reminder)
-        self.uniteSetting()
-        self.setClassTime()
+        try:
+            # Main
+            self.ClassProcess(ClassList)
+            # Prepare Info
+            self.setFirstWeekDate(date)
+            self.setReminder(reminder)
+            self.uniteSetting()
+            self.setClassTime()
+            # Return Main
+            self.classInfoHandle()
+            self.icsCreateAndSave(username)
+            return True, "课表生成成功"
+        except:
+            return False, "处理课表数据是遇到未知错误"
 
-        self.classInfoHandle()
-        self.icsCreateAndSave(username)
+
+test = iCalPro()
+res = test.iCalPro('18416328','194117','20190902','1')
+print(res)
