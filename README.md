@@ -32,7 +32,8 @@ source ./venv/bin/activate # Linux
 pip install -r requirements.txt
 
 # 运行
-python script.py
+python script.py           # Windows
+sudo python3 script.py     # Linux
 
 # 然后根据提示一次键入
 * 教务系统学号 + 密码
