@@ -48,7 +48,7 @@ def LoginCookie(user: str, passwd: str) -> dict:
     if not sc.cookies.get_dict():
         print("Failed to Login, please check the username and password.")
         sys.exit(0)
-    
+
     # Intercept jump link
     try:
         tmp = session.get(
@@ -103,11 +103,11 @@ def ClassProcess(gClass: list):
     global classInfoList
     for i in range(7):  # Traverse each day in turn
         num = 0
-        classToday = list()  # A list contains today's class schedules
+        classToday = list()  # A list contains today's class schedules 经过格式化处理的今日课
         # Every day of the week
-        for info in cScheduleTemp[i]:
+        for info in cScheduleTemp[i]:  # cScheduleTemp[i]存储一天的课程
             num += 1
-            if info == '\xa0':
+            if info == '\xa0':  # 此节课没有课
                 continue  # No processing without class
             infoList = info.split('/')[:-1]  # ex: ['计算机科学与技术导论 W1102  13-16,']
             # The situation of different classes in different weeks in the same class
@@ -122,8 +122,11 @@ def ClassProcess(gClass: list):
                         temp[2] = '1'
                     elif temp[2] == '双':
                         temp[2] = '2'
-                temp.append(i + 1)  # What day of the week.
-                temp.append(num)  # What class is it.
+                temp.append(i + 1)  # What day of the week. 星期几
+                temp.append(num)  # What class is it. 第几节课
+
+                # temp 标准范例：['概率论与数理统计', 'W15阶', '3', '2-5,8-16', 1, 7]
+                # temp 格式注释：[课程名称, 上课地点, 单双周, 哪几周上课, 星期几, 第几节课]
 
                 classToday.append(temp)
 
@@ -131,14 +134,15 @@ def ClassProcess(gClass: list):
         # Consolidated classes.
         classDict = dict()
         for eclass in classToday:
-            className = eclass[0]
-            if className not in classDict:
+            className = eclass[0]  # 课程名称
+            classPlace = eclass[1]  # 课程地点
+            if (className+classPlace) not in classDict:
                 eclass.append(1)
-                classDict[className] = eclass
+                classDict[className+classPlace] = eclass
             else:
                 # If the class already exists in classDict
                 # Plus the Class Hours(+1)
-                classDict[className][6] += 1
+                classDict[className+classPlace][6] += 1
 
         # Generating a list of class information (Temporary)
         for eclass in classDict.values():

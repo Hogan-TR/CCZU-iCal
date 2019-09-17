@@ -140,13 +140,14 @@ class iCal(object):
             classDict = dict()
             for eclass in classToday:
                 className = eclass[0]
-                if className not in classDict:
+                classPlace = eclass[1]
+                if (className+classPlace) not in classDict:
                     eclass.append(1)
-                    classDict[className] = eclass
+                    classDict[className+classPlace] = eclass
                 else:
                     # If the class already exists in classDict
                     # Plus the Class Hours(+1)
-                    classDict[className][6] += 1
+                    classDict[className+classPlace][6] += 1
 
             # Generating a list of class information (Temporary)
             for eclass in classDict.values():
