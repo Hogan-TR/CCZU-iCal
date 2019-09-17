@@ -1,7 +1,6 @@
 import requests
 import json
 import sys
-import pprint
 import copy
 import datetime
 import time
@@ -49,7 +48,7 @@ def LoginCookie(user: str, passwd: str) -> dict:
     if not sc.cookies.get_dict():
         print("用户名或密码错误，请检查重试")
         sys.exit(0)
-    
+
     # Intercept jump link
     try:
         tmp = session.get(
@@ -133,13 +132,14 @@ def ClassProcess(gClass: list):
         classDict = dict()
         for eclass in classToday:
             className = eclass[0]
-            if className not in classDict:
+            classPlace = eclass[1]
+            if (className+classPlace) not in classDict:
                 eclass.append(1)
-                classDict[className] = eclass
+                classDict[className+classPlace] = eclass
             else:
                 # If the class already exists in classDict
                 # Plus the Class Hours(+1)
-                classDict[className][6] += 1
+                classDict[className+classPlace][6] += 1
 
         # Generating a list of class information (Temporary)
         for eclass in classDict.values():
@@ -253,7 +253,7 @@ def random_str(randomlength):
     chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
     length = len(chars) - 1
     random = Random()
-    for i in range(randomlength):
+    for _ in range(randomlength):
         str += chars[random.randint(0, length)]
     return str
 
@@ -355,7 +355,7 @@ if __name__ == "__main__":
     ClassProcess(gClass)
 
     firstWeekDate = input(
-        '请输入此学期第一周的星期一日期(eg 20160905):')  
+        '请输入此学期第一周的星期一日期(eg 20160905):')
     print("正在配置第一周周一日期...")
     setFirstWeekDate(firstWeekDate)
 

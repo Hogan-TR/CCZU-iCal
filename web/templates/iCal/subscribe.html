@@ -1,0 +1,19 @@
+{% extends 'iCal/base.html' %}
+
+{% block title %}
+Subscribe
+{% endblock %}
+
+{% block content %}
+{% if link %}
+<h2>完成！</h2>
+<p>课表生成成功，一下有两种方式导入日历</p>
+<p>1.通过日历链接订阅</p>
+<p>{{ link }}</p>
+<p>2.直接下载ics文件手动导入</p>
+<a href="{{ link }}"><input type="button" value="下载"></a>
+{% else %}
+<h3>Meet Error</h3>
+<p>{{ errortips }}</p>
+{% endif %}
+{% endblock %}
