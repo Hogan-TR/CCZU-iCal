@@ -220,18 +220,9 @@ class iCal(object):
 
             date = startDate
             dateList = []
-            if (week == 3):
-                dateList.append(string)
-            if ((week == 2) and (startWeek % 2 == 0)):
-                dateList.append(string)
-            if ((week == 1) and (startWeek % 2 == 1)):
-                dateList.append(string)
             i = NO
-            w = startWeek + 1
+            w = startWeek
             while (i):
-                date = date + datetime.timedelta(days=7.0)
-                if (date > endDate):
-                    i = YES
                 if (week == 3):
                     string = date.strftime('%Y%m%d')
                     dateList.append(string)
@@ -241,6 +232,10 @@ class iCal(object):
                 if ((week == 2) and (w % 2 == 0)):
                     string = date.strftime('%Y%m%d')
                     dateList.append(string)
+                    
+                date = date + datetime.timedelta(days=7.0)
+                if (date > endDate):
+                    i = YES
                 w = w + 1
             classInfo.append(dateList)
 
