@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Subscribe
+{% endblock %}
+
+{% block content %}
+{% if context.link %}
+<div class="container">
+    <h1><b>完成！</b></h1>
+</div>
+<div class="container">
+    <h4>课表生成成功，以下有两种方式导入日历</h4>
+    <h4>1. 通过日历链接订阅</h4>
+    <form>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" id="textAreas" class="form-control" value="{{ context.link }}" readonly>
+                    <div class="input-group-btn">
+                        <button type="button" id="copy" class="btn btn-default">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <h4>2. 直接下载ics文件手动导入</h4>
+    <a type="button" class="btn btn-default" href="{{ context.link }}">下载</a>
+    {% else %}
+    <div class="container">
+        <h1><b>错误！</b></h1>
+    </div>
+    <div class="container">
+        <h4>{{ context.errortips }}</h4>
+        <a type="button" class="btn btn-default" href="http://47.102.43.250:9000/iCal">返回</a>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}

@@ -1,4 +1,3 @@
-from web.settings import BASE_DIR
 import requests
 import copy
 import time
@@ -10,7 +9,7 @@ import uuid
 from random import Random
 from lxml import etree
 
-sys.path.append('../')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class iCal(object):
@@ -232,7 +231,7 @@ class iCal(object):
                 if ((week == 2) and (w % 2 == 0)):
                     string = date.strftime('%Y%m%d')
                     dateList.append(string)
-                    
+
                 date = date + datetime.timedelta(days=7.0)
                 if (date > endDate):
                     i = YES
@@ -267,7 +266,7 @@ class iCal(object):
 
     def save(self, string, username) -> str:
         uuidfilename = uuid.uuid5(uuid.NAMESPACE_DNS, username)
-        filepath = os.path.join(BASE_DIR, f"tempics/{uuidfilename}")
+        filepath = os.path.join(BASE_DIR, f"tempfile/{uuidfilename}")
         with open(f"{filepath}.ics", 'wb') as f:
             f.write(string.encode("utf-8"))
         return f"{uuidfilename}.ics"
@@ -336,3 +335,7 @@ class iCalPro(iCal):
             return True, filename
         except:
             return False, "处理课表数据是遇到未知错误"
+
+# t = iCalPro()
+# f = t.iCalPro('18416328','194117','20190902','2')
+# print(f)
