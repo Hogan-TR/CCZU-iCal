@@ -6,6 +6,7 @@ import os
 
 BASE_IP = "0.0.0.0"
 
+
 @app.route('/iCal', methods=['GET', 'POST'])
 def index():
     form = MyForm()
@@ -32,7 +33,7 @@ def subscribe():
     try:
         res = session['res']
     except:
-        return redirect(url_for('index')) 
+        return redirect(url_for('index'))
 
     if res[0]:  # Success
         filename = res[1]
@@ -47,4 +48,4 @@ def subscribe():
 @app.route('/iCal/download/<filename>')
 def download(filename):
     filepath = os.path.join(BASE_DIR, 'tempfile')
-    return send_from_directory(filepath, filename)
+    return send_from_directory(filepath, filename, as_attachment=True, attachment_filename='Class_Schedule.ics')
