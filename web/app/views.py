@@ -43,7 +43,10 @@ def subscribe():
                    url_for('download', filename=filename)}
     else:
         error = res[1]
-        context = {'errortips': error}
+        context = {
+            'errortips': error,
+            'link_home': f"http://{BASE_IP}:{RUN_PORT}/iCal"
+        }
     return render_template('subscribe.html', context=context)
 
 
