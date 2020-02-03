@@ -1,3 +1,5 @@
 from app import app
+from config import RUN_HOST, RUN_PORT
 
-app.run(host='0.0.0.0', port='9000')
+
+app.run(host=RUN_HOST, port=RUN_PORT)

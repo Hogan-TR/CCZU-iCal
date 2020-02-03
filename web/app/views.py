@@ -4,7 +4,9 @@ from app.funcs import iCalPro, BASE_DIR
 from flask import session, request, render_template, redirect, url_for, send_from_directory, flash
 import os
 
-BASE_IP = "0.0.0.0"
+import sys
+sys.path.append('..')
+from config import *
 
 
 @app.route('/iCal', methods=['GET', 'POST'])
@@ -37,7 +39,7 @@ def subscribe():
 
     if res[0]:  # Success
         filename = res[1]
-        context = {'link': f"http://{BASE_IP}:9000" +
+        context = {'link': f"http://{BASE_IP}:{RUN_PORT}" +
                    url_for('download', filename=filename)}
     else:
         error = res[1]

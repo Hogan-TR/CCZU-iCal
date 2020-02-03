@@ -9,7 +9,8 @@ import uuid
 from random import Random
 from lxml import etree
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append('..')
+from config import BASE_DIR
 
 
 class iCal(object):
