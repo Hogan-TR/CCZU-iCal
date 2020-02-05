@@ -2,7 +2,7 @@ import os
 
 
 RUN_HOST = '0.0.0.0'
-RUN_PORT = '9000'
+RUN_PORT = '8888'
 
 BASE_IP = "localhost" # Change IP with real ip or domain name
 
