@@ -1,0 +1,11 @@
+version: "3"
+
+
+services:
+    web:
+        build: .
+        command: python ./web/run.py
+        volumes:
+            - .:/code
+        ports:
+            - "8888:8888"
