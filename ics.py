@@ -1,5 +1,9 @@
 import time
 import datetime
+import pytz
+import uuid
+import json
+from icalendar import Calendar, Event
 
 
 class ICal(object):
@@ -37,13 +41,50 @@ class ICal(object):
                     status = False
         return info
 
-    def test(self):
-        x = map(self.handler, self.courseInfo)
-        from pprint import pprint
-        pprint(list(x))
+    def to_ical(self):
+        prop = {
+            'PRODID': '-//Google Inc//Google Calendar 70.9054//EN',
+            'VERSION': '2.0',
+            'CALSCALE': 'GREGORIAN',
+            'METHOD': 'PUBLISH',
+            'X-WR-CALNAME': '课程表',
+            'X-WR-TIMEZONE': 'Asia/Shanghai'
+        }
+        cal = Calendar()
+        for key, value in prop.items():
+            cal.add(key, value)
+
+        courseInfo = map(self.handler, self.courseInfo)
+        for course in courseInfo:
+            startTime = self.schedule[course['classtime'][0]-1]['startTime']
+            endTime = self.schedule[course['classtime'][-1]-1]['endTime']
+            createTime = datetime.datetime.now()
+            for day in course['daylist']:
+                sub_prop = {
+                    'CREATED': createTime,
+                    'SUMMARY': "{0} | {1} {2}".format(course['classname'], '/'.join(course['classroom']), '/'.join(course['teacher'])),
+                    'UID': uuid.uuid4().hex + '@google.com',
+                    'DTSTART': datetime.datetime.strptime(day+startTime, '%Y%m%d%H%M'),
+                    'DTEND': datetime.datetime.strptime(day+endTime, '%Y%m%d%H%M'),
+                    'DTSTAMP': createTime,
+                    'LAST-MODIFIED': createTime,
+                    'SEQUENCE': '0',
+                    'TRANSP': 'OPAQUE',
+                    'X-APPLE-TRAVEL-ADVISORY-BEHAVIOR': 'AUTOMATIC'
+                }
+                event = Event()
+                for key, value in sub_prop.items():
+                    event.add(key, value)
+                cal.add_component(event)
+
+        return cal.to_ical()
 
 
-ge = ICal.withStrDate('20200914', [], [{
+schedule = None
+with open('conf_classTime.json', 'r') as f:
+    data = json.load(f)
+    schedule = data['classTime']
+ge = ICal.withStrDate('20200914', schedule, [{
     "classname": "信息安全",
     "classtime": [8, 9],
     "day": 5,
@@ -52,5 +93,7 @@ ge = ICal.withStrDate('20200914', [], [{
     "classroom": ["W1101"],
     "teacher": ["王波", "Joh"],
 }])
+print(bytes.decode(ge.to_ical()).replace('\r\n', '\n').strip())
 
-ge.test()
+# def display(cal):
+#     return bytes.decode(cal.to_ical()).replace('\r\n', '\n').strip()
