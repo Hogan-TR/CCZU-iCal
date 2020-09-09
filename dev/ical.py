@@ -1,8 +1,6 @@
 import time
 import datetime
-import pytz
 import uuid
-import json
 from icalendar import Calendar, Event
 
 
@@ -78,22 +76,3 @@ class ICal(object):
                 cal.add_component(event)
 
         return cal.to_ical()
-
-
-schedule = None
-with open('conf_classTime.json', 'r') as f:
-    data = json.load(f)
-    schedule = data['classTime']
-ge = ICal.withStrDate('20200914', schedule, [{
-    "classname": "信息安全",
-    "classtime": [8, 9],
-    "day": 5,
-    "week": ['1-16'],
-    "oe": 1,
-    "classroom": ["W1101"],
-    "teacher": ["王波", "Joh"],
-}])
-print(bytes.decode(ge.to_ical()).replace('\r\n', '\n').strip())
-
-# def display(cal):
-#     return bytes.decode(cal.to_ical()).replace('\r\n', '\n').strip()
