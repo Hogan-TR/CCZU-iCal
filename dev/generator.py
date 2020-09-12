@@ -27,7 +27,7 @@ def classHandler(tbody):
                         'day': day+1,
                         'week': list(filter(None, res.group(4).split(','))),
                         'oe': oeDict.get(res.group(3), 3),
-                        'classroom': [res.group(2)],
+                        'classroom': res.group(2),
                     }
                     courseInfo[id] = info
                 elif course != '\xa0' and id in courseInfo.keys():
