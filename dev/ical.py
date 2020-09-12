@@ -60,7 +60,7 @@ class ICal(object):
             for day in course['daylist']:
                 sub_prop = {
                     'CREATED': createTime,
-                    'SUMMARY': "{0} | {1} {2}".format(course['classname'], '/'.join(course['classroom']), '/'.join(course['teacher'])),
+                    'SUMMARY': "{0} | {1}".format(course['classname'], '/'.join(course['classroom'])),
                     'UID': uuid.uuid4().hex + '@google.com',
                     'DTSTART': datetime.datetime.strptime(day+startTime, '%Y%m%d%H%M'),
                     'DTEND': datetime.datetime.strptime(day+endTime, '%Y%m%d%H%M'),
@@ -75,4 +75,4 @@ class ICal(object):
                     event.add(key, value)
                 cal.add_component(event)
 
-        return cal.to_ical()
+        return bytes.decode(cal.to_ical(), encoding='utf-8').replace('\r\n', '\n').strip()
