@@ -5,9 +5,9 @@ from ical import ICal
 from lxml import etree
 
 
-def classHandler(tbody):
+def classHandler(table):
     classmatrix = [tr.xpath('./td[position()>1]/text()')
-                   for tr in tbody.xpath('tr[position()>1]')]
+                   for tr in table.xpath('tr[position()>1]')]
     classmatrixT = [each for each in zip(*classmatrix)]
     oeDict = {'单': 1, '双': 2}
     courseInfo = dict()

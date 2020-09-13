@@ -1,13 +1,11 @@
 import sys
 import requests
-import json
 import asyncio
 import aiohttp
-import logging
 import random
+import logging
 from lxml import etree
-from requests.models import Response
-from requests.sessions import session
+from generator import classHandler
 
 
 def LoginCookie(user: str, passwd: str) -> dict:
@@ -99,7 +97,7 @@ def extraIds(cookies: dict) -> list:
 
 def genUrls(ids: list, xq: str):
     url = 'http://219.230.159.132/web_jxrw/cx_kb_bjkb_bj.aspx?xsbh={}&xq={}'
-    return random.sample([url.format(id, xq) for id in ids], 1000)
+    return random.sample([url.format(id, xq) for id in ids], 20)
 
 
 class AsyncGrad(object):
@@ -117,10 +115,13 @@ class AsyncGrad(object):
     async def taskhandler(self, task_id, work_queue):
         while not work_queue.empty():
             cur_url = await work_queue.get()
-            html = etree.HTML(await self.g(cur_url))
-            print(html.xpath('//div[@id="Panel2"]//tbody'))
-            # assert html.xpath('//div[@id="Panel1"]//tbody') != []
-            # tbody =
+            html = bytes.decode(await self.g(cur_url), encoding='utf-8')
+            html = etree.HTML(html)
+            if html.xpath('//div[@id="Panel1"]//table') == []:
+                continue
+            table = html.xpath('//div[@id="Panel2"]//table')[0]
+            courseInfo = classHandler(table)
+            logging.debug(courseInfo)
 
     def eventloop(self):
         q = asyncio.Queue()
@@ -134,9 +135,11 @@ class AsyncGrad(object):
 if __name__ == '__main__':
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'}
+    logging.basicConfig(
+        format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s', level=logging.DEBUG)
     # cookies = LoginCookie('', '')
     cookies = {'ASP.NET_SessionId': 'asq5cb45daonxp45gtorhq45'}
     ids = extraIds(cookies)
     urls = genUrls(ids, '20-21-1')
-    test = AsyncGrad(urls, 100, cookies)
+    test = AsyncGrad(urls, 10, cookies)
     test.eventloop()
