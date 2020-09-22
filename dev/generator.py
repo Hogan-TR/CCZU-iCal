@@ -11,6 +11,7 @@ def classHandler(table):
     classmatrixT = [each for each in zip(*classmatrix)]
     oeDict = {'单': 1, '双': 2}
     courseInfo = dict()
+    courseList = dict()
 
     for day, courses in enumerate(classmatrixT):
         for time, course_cb in enumerate(courses):
@@ -27,13 +28,20 @@ def classHandler(table):
                         'day': day+1,
                         'week': list(filter(None, res.group(4).split(','))),
                         'oe': oeDict.get(res.group(3), 3),
-                        'classroom': res.group(2),
+                        'classroom': [res.group(2)],
                     }
                     courseInfo[id] = info
                 elif course != '\xa0' and id in courseInfo.keys():
                     courseInfo[id]['classtime'].append(time+1)
 
-    return [course for course in courseInfo.values()]
+    for course in courseInfo.values():
+        purecourse = {key: value for key, value in course.items() if key != "classroom"}
+        if str(purecourse) in courseList:
+            courseList[str(purecourse)]["classroom"].append(course["classroom"][0])
+        else:
+            courseList[str(purecourse)] = course
+
+    return [course for course in courseList.values()]
 
 
 if __name__ == '__main__':
@@ -41,8 +49,11 @@ if __name__ == '__main__':
         text = etree.HTML(f.read())
     with open('../conf_classTime.json', encoding='utf-8') as f:
         schedule = json.load(f)['classTime']
-    tbody = text.xpath('//div/table/tbody')[0]
-    courseInfo = classHandler(tbody)
+    table = text.xpath('//div/table')[0]
+    courseInfo = classHandler(table)
+    # with open("save.json", "w", encoding="utf-8") as f:
+    #     import json
+    #     json.dump(courseInfo, f, ensure_ascii=False)
     iCal = ICal.withStrDate('20200914', schedule, courseInfo)
     res = iCal.to_ical()
     with open('./class.ics', 'w', encoding='utf-8') as f:

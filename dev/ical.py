@@ -56,11 +56,12 @@ class ICal(object):
         for course in courseInfo:
             startTime = self.schedule[course['classtime'][0]-1]['startTime']
             endTime = self.schedule[course['classtime'][-1]-1]['endTime']
+            classroom = list(filter(None, course["classroom"]))
             createTime = datetime.datetime.now()
             for day in course['daylist']:
                 sub_prop = {
                     'CREATED': createTime,
-                    'SUMMARY': "{0} | {1}".format(course['classname'], course['classroom']),
+                    'SUMMARY': "{0} | {1}".format(course['classname'], '/'.join(classroom)),
                     'UID': uuid.uuid4().hex + '@google.com',
                     'DTSTART': datetime.datetime.strptime(day+startTime, '%Y%m%d%H%M'),
                     'DTEND': datetime.datetime.strptime(day+endTime, '%Y%m%d%H%M'),
