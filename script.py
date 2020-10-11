@@ -1,6 +1,5 @@
 import json
 import sys
-import copy
 import datetime
 import time
 import re
@@ -85,31 +84,47 @@ def getDom(cookies: dict) -> list:
         return None
 
 
-def classHandler(table):
+def classHandler(text):
+    # structure text
+    textDom = etree.HTML(text)
+    tables = textDom.xpath('//div/table')
+    tableup, tabledown = tables[1], tables[2]
+    # extract all class names
+    classNameList = tableup.xpath(
+        './tr[@class="dg1-item"]/td[position()=2]/text()')
+    # extract class info of from the table
     classmatrix = [tr.xpath('./td[position()>1]/text()')
-                   for tr in table.xpath('tr[position()>1]')]
+                   for tr in tabledown.xpath('tr[position()>1]')]
     classmatrixT = [each for each in zip(*classmatrix)]
     oeDict = {'单': 1, '双': 2}
     courseInfo = dict()
     courseList = dict()
     global courseInfoRes
 
+    # day: day of week / courses: all courses in a day
     for day, courses in enumerate(classmatrixT):
+        # time: the rank of lesson / course_cb: one item in table cell
         for time, course_cb in enumerate(courses):
             course_list = list(filter(None, course_cb.split('/')))
             for course in course_list:
                 id = uuid.uuid3(uuid.NAMESPACE_DNS, course+str(day)).hex
                 if course != '\xa0' and (not time or id not in courseInfo.keys()):
+                    nl = list(
+                        filter(lambda x: course.startswith(x), classNameList))
+                    assert len(
+                        nl) == 1, "Unable to resolve course name correctly"
+                    classname = nl[0]
+                    course = course.replace(classname, '').strip()
                     res = re.match(
-                        r'(\S+) *(\w+)? *([单双]?) *((\d+-\d+,?)+)', course)
+                        r'(\w+)? *([单双]?) *((\d+-\d+,?)+)', course)
                     assert res, "Course information parsing abnormal"
                     info = {
-                        'classname': res.group(1),
+                        'classname': classname,
                         'classtime': [time+1],
                         'day': day+1,
-                        'week': list(filter(None, res.group(4).split(','))),
-                        'oe': oeDict.get(res.group(3), 3),
-                        'classroom': [res.group(2)],
+                        'week': list(filter(None, res.group(3).split(','))),
+                        'oe': oeDict.get(res.group(2), 3),
+                        'classroom': [res.group(1)],
                     }
                     courseInfo[id] = info
                 elif course != '\xa0' and id in courseInfo.keys():
@@ -130,7 +145,8 @@ def classHandler(table):
 
 def setReminder(reminder):
     global timeReminder
-    time_tuple = re.match(r"(([\d ]+) days, )*(\d+):(\d+):(\d+)", str(datetime.timedelta(minutes=int(reminder)))).groups()[1:]
+    time_tuple = re.match(r"(([\d ]+) days, )*(\d+):(\d+):(\d+)",
+                          str(datetime.timedelta(minutes=int(reminder)))).groups()[1:]
     time_map = map(lambda x: x if x else "0", time_tuple)
     timeReminder = "-P{}DT{}H{}M{}S".format(*list(time_map))
     print("SetReminder:", timeReminder)
@@ -264,9 +280,7 @@ if __name__ == "__main__":
         print("Getting Class Schedule Successfully")
 
     print("Processing Class Schedule...")
-    textDom = etree.HTML(textDom)
-    table = textDom.xpath("//div/table")[2]
-    classHandler(table)
+    classHandler(textDom)
 
     print("Setting ClassTime...")
     setClassTime()
