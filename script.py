@@ -145,6 +145,7 @@ def classHandler(text):
 
 def setReminder(reminder):
     global timeReminder
+    reminder = 15 if reminder == '' else reminder
     time_tuple = re.match(r"(([\d ]+) days, )*(\d+):(\d+):(\d+)",
                           str(datetime.timedelta(minutes=int(reminder)))).groups()[1:]
     time_map = map(lambda x: x if x else "0", time_tuple)
@@ -291,7 +292,7 @@ if __name__ == "__main__":
     print("SetFirstWeekDate:", firstWeekDate)
 
     reminder = input(
-        'The reminder function is being configured, please set the reminder time in minutes (eg 10): ')
+        'The reminder function is being configured, please set the reminder time in minutes (default 15): ')
     print("Setting Reminder...")
     setReminder(reminder)
 
