@@ -249,6 +249,28 @@ class ICal(object):
                 event.add_component(alarm)
                 cal.add_component(event)
 
+        # weekly info
+        fweek = datetime.date.fromtimestamp(int(time.mktime(self.firstWeekDate))) - datetime.timedelta(days=1.0)
+        createTime = datetime.datetime.now()
+        for _ in range(18):
+            sub_prop = {
+                'CREATED': createTime,
+                'SUMMARY': "学期第 {} 周".format(_ + 1),
+                'UID': uuid.uuid4().hex + '@google.com',
+                'DTSTART': fweek,
+                'DTEND': fweek + datetime.timedelta(days=7.0),
+                'DTSTAMP': createTime,
+                'LAST-MODIFIED': createTime,
+                'SEQUENCE': '0',
+                'TRANSP': 'OPAQUE',
+                'X-APPLE-TRAVEL-ADVISORY-BEHAVIOR': 'AUTOMATIC'
+            }
+            fweek += datetime.timedelta(days=7.0)
+            event = Event()
+            for key, value in sub_prop.items():
+                event.add(key, value)
+            cal.add_component(event)
+
         return bytes.decode(cal.to_ical(), encoding='utf-8').replace('\r\n', '\n').strip()
 
 
