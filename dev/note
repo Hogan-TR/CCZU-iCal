@@ -1,0 +1,132 @@
+<div>
+    <table>
+        <tr class="dg1-header2">
+            <th scope="col">节次</th>
+            <th scope="col">星期一</th>
+            <th scope="col">星期二</th>
+            <th scope="col">星期三</th>
+            <th scope="col">星期四</th>
+            <th scope="col">星期五</th>
+            <th scope="col">星期六</th>
+            <th scope="col">星期日</th>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">1</td>
+            <td style="width:12%;">数据库系统原理（双语） W9阶  2-15/</td>
+            <td style="width:12%;">Python程序设计 W国际403  2-13/</td>
+            <td style="width:12%;">Android基础及应用 W机械213机房  1-16/Android基础及应用 W机械214机房  1-16/</td>
+            <td style="width:12%;">&nbsp;</td><td style="width:12%;">数据库系统原理（双语） W9阶  2-15/</td>
+            <td style="width:12%;">&nbsp;</td><td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">2</td>
+            <td style="width:12%;">数据库系统原理（双语） W9阶  2-15/</td>
+            <td style="width:12%;">Python程序设计 W国际403  2-13/</td>
+            <td style="width:12%;">Android基础及应用 W机械213机房  1-16/Android基础及应用 W机械214机房  1-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">数据库系统原理（双语） W9阶  2-15/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">3</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">4</td>
+            <td style="width:12%;">JAVA程序设计 W机械213机房  1-14/JAVA程序设计 W机械214机房  1-14/</td>
+            <td style="width:12%;">Android基础及应用 W机械213机房 双 1-16/Android基础及应用 W机械214机房 双 1-16/</td>
+            <td style="width:12%;">JAVA程序设计 W机械213机房  1-14/JAVA程序设计 W机械214机房  1-14/</td>
+            <td style="width:12%;">Python程序设计 W国际403  2-13/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">5</td>
+            <td style="width:12%;">JAVA程序设计 W机械213机房  1-14/JAVA程序设计 W机械214机房  1-14/</td>
+            <td style="width:12%;">Android基础及应用 W机械213机房 双 1-16/Android基础及应用 W机械214机房 双 1-16/</td>
+            <td style="width:12%;">JAVA程序设计 W机械213机房  1-14/JAVA程序设计 W机械214机房  1-14/</td>
+            <td style="width:12%;">Python程序设计 W国际403  2-13/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">6</td>
+            <td style="width:12%;">毛泽东思想和中国特色 W6阶  1-16/</td>
+            <td style="width:12%;">信息安全 W1302  1-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">毛泽东思想和中国特色 W6阶  1-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">7</td>
+            <td style="width:12%;">毛泽东思想和中国特色 W6阶  1-16/</td>
+            <td style="width:12%;">信息安全 W1302  1-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">毛泽东思想和中国特色 W6阶  1-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">8</td>
+            <td style="width:12%;">毛泽东思想和中国特色 W6阶  1-16/</td>
+            <td style="width:12%;">操作系统及Linux应用 W1205  1-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">操作系统及Linux应用 W1205  1-16/</td>
+            <td style="width:12%;">信息安全 W1101 单 1-16/形势与政策(5) W5阶 双 10-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">9</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">操作系统及Linux应用 W1205  1-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">操作系统及Linux应用 W1205  1-16/</td>
+            <td style="width:12%;">信息安全 W1101 单 1-16/形势与政策(5) W5阶 双 10-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">10</td>
+            <td style="width:12%;">人工智能基础 W1205  1-2,9-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">高级英语 W10阶  2-16/</td>
+            <td style="width:12%;">俄罗斯政治与外交 W3阶   4-11/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">11</td>
+            <td style="width:12%;">人工智能基础 W1205  1-2,9-16/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">高级英语 W10阶  2-16/</td>
+            <td style="width:12%;">俄罗斯政治与外交 W3阶   4-11/</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+        <tr class="dg1-item">
+            <td style="width:4%;">12</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+            <td style="width:12%;">&nbsp;</td>
+        </tr>
+    </table>
+</div>
