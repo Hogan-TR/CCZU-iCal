@@ -1,10 +1,10 @@
 import os
 
 
-RUN_HOST = '0.0.0.0'
-RUN_PORT = '5000'
+RUN_HOST = '127.0.0.1'
+RUN_PORT = '6161'
 
-BASE_HOST = "ical.hogantr.me" # Change IP with real ip or domain name
+BASE_HOST = "ical.minitr.tech" # Change IP with real ip or domain name
 
 SECRET_KEY = os.urandom(24)
 

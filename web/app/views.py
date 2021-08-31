@@ -39,7 +39,7 @@ def subscribe():
 
     if res[0]:  # Success
         filename = res[1]
-        context = {'link': f"http://{BASE_HOST}" +
+        context = {'link': f"https://{BASE_HOST}" +
                    url_for('download', filename=filename)}
     else:
         error = res[1]
@@ -53,4 +53,4 @@ def subscribe():
 @app.route('/download/<filename>')
 def download(filename):
     filepath = os.path.join(BASE_DIR, 'tempfile')
-    return send_from_directory(filepath, filename, as_attachment=True, attachment_filename='Class_Schedule.ics')
+    return send_from_directory(filepath, filename, as_attachment=True, attachment_filename='class_schedule.ics')
