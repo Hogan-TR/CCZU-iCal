@@ -9,7 +9,7 @@ sys.path.append('..')
 from config import *
 
 
-@app.route('/iCal', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
     form = MyForm()
     if request.method == 'POST':
@@ -30,7 +30,7 @@ def index():
     return render_template('index.html', form=form)
 
 
-@app.route('/iCal/subscribe')
+@app.route('/subscribe')
 def subscribe():
     try:
         res = session['res']
@@ -39,18 +39,18 @@ def subscribe():
 
     if res[0]:  # Success
         filename = res[1]
-        context = {'link': f"http://{BASE_IP}:{RUN_PORT}" +
+        context = {'link': f"https://{BASE_HOST}" +
                    url_for('download', filename=filename)}
     else:
         error = res[1]
         context = {
             'errortips': error,
-            'link_home': f"http://{BASE_IP}:{RUN_PORT}/iCal"
+            'link_home': url_for('index')
         }
     return render_template('subscribe.html', context=context)
 
 
-@app.route('/iCal/download/<filename>')
+@app.route('/download/<filename>')
 def download(filename):
     filepath = os.path.join(BASE_DIR, 'tempfile')
-    return send_from_directory(filepath, filename, as_attachment=True, attachment_filename='Class_Schedule.ics')
+    return send_from_directory(filepath, filename, as_attachment=True, attachment_filename='class_schedule.ics')
