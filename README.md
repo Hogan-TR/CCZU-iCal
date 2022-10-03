@@ -44,7 +44,7 @@ python script.py
 
 ## Web版链接
 
-🔗 [https://ical.minitr.tech](https://ical.minitr.tech)
+🔗 ~~[https://ical.minitr.tech](https://ical.minitr.tech)~~
 
 ## 待办
 
